@@ -40,8 +40,13 @@ router.patch('/:id', (req, res) => {
 })
 
 // Delete a user
-router.delete('/:id', (req, res) => {
-  
+router.delete('/:id', getUser, async (req, res) => {
+  try {
+    await res.user.remove();
+    res.json({ message: 'User deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ message: err.message })
+  }
 })
 
 async function getUser(req, res, next) {
