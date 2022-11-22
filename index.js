@@ -1,10 +1,14 @@
 import express from "express";
-const app = express();
-const PORT = 8080;
 import mongoose from "mongoose";
 import * as dotenv from 'dotenv';
-
+import bodyParser from 'body-parser';
 dotenv.config();
+
+const app = express();
+const PORT = 8080;
+
+// Initialize bodyParser middleware
+app.use(bodyParser.json());
 
 mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true });
 const db = mongoose.connection;
