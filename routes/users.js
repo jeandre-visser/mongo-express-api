@@ -1,4 +1,5 @@
 import express from 'express';
+import user from '../models/user.js';
 const router = express.Router();
 import User from '../models/user.js';
 
@@ -35,8 +36,21 @@ router.get('/:id', getUser, (req, res) => {
 })
 
 // Update a user
-router.patch('/:id', (req, res) => {
-  
+router.patch('/:id', getUser, async (req, res) => {
+  // Get the req.body parameters
+  const { firstName, lastName, age, favoriteColor } = req.body;
+
+  if (firstName) res.user.firstName = firstName;
+  if (lastName) res.user.lastName = lastName;
+  if (age) res.user.age = age;
+  if (favoriteColor) res.user.favoriteColor = favoriteColor;
+
+  try {
+    const updatedUser = await res.user.save();
+    res.json(updatedUser)
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
 })
 
 // Delete a user
